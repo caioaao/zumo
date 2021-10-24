@@ -28,10 +28,6 @@ void setWheelsSpeeds(int16_t throttle, int16_t steer) {
     int16_t leftSpeed = scaleSpeed(throttle + steer);
     int16_t rightSpeed = scaleSpeed(throttle - steer);
     motors.setSpeeds(leftSpeed, rightSpeed);
-
-    char out_buf[100];
-    sprintf(out_buf, "throttle=%d; steer=%d; leftWheel=%d, rightWeel=%d\n", throttle, steer, leftSpeed, rightSpeed);
-    Serial.print(out_buf);
 }
 
 char in_buf[2];
