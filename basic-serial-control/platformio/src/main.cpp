@@ -12,7 +12,6 @@ bool isMoving = false;
 unsigned long stopMovingAt = 0;
 Zumo32U4Motors motors;
 
-
 void setup() {
     ledYellow(1);
     Wire.begin();
@@ -35,6 +34,7 @@ char in_buf[2];
 void loop() {
     ledYellow(isMoving);
     unsigned long tick = millis();
+
     if(Serial.peek() >= 0) {
         if(Serial.readBytes(in_buf, 2) == 2){
             setWheelsSpeeds(in_buf[0], in_buf[1]);
@@ -46,5 +46,12 @@ void loop() {
     else if(isMoving && stopMovingAt < tick) {
         isMoving = false;
         setWheelsSpeeds(0, 0);
+    }
+}
+
+void main(){
+    setup();
+    while(true) {
+        loop();
     }
 }
