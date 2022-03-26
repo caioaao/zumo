@@ -7,15 +7,21 @@ import (
 	"go.bug.st/serial"
 )
 
-type Robot struct {
+type Robot interface {
+	Connect() error
+	Disconnect() error
+	Move(throttle int8, steer int8) error
+}
+
+type robot struct {
 	port serial.Port
 }
 
-func NewRobot() *Robot {
-	return &Robot{}
+func NewRobot() Robot {
+	return &robot{}
 }
 
-func (r *Robot) Connect() error {
+func (r *robot) Connect() error {
 	mode := &serial.Mode{
 		BaudRate: 9600,
 	}
@@ -29,7 +35,7 @@ func (r *Robot) Connect() error {
 	return nil
 }
 
-func (r *Robot) Disconnect() error {
+func (r *robot) Disconnect() error {
 	if r.port == nil {
 		return errors.New("robot not connected")
 	}
@@ -39,7 +45,7 @@ func (r *Robot) Disconnect() error {
 	return nil
 }
 
-func (r *Robot) Move(throttle int8, steer int8) error {
+func (r *robot) Move(throttle int8, steer int8) error {
 	if r.port == nil {
 		return errors.New("robot not connected")
 	}
